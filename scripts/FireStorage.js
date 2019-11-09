@@ -25,38 +25,54 @@ function storedata()
   })
 }
 
-function getdata(){
-  var docRef = db.collection("movies").doc("新世紀福爾摩斯");
-  console.log("Stage-1");
-  docRef.get().then(function(doc){
-    if(doc.exists){
-      console.log(doc.data());
-      console.log("Name: " + doc.data().name + " / Date: " + doc.data().date + " / Description: " + doc.data().description);
-    }else{
-      console.log("找不到文件");
-    }
-  }).catch(function(error){
-      console.log("提取文件時出錯: ", error);
-  });
-}
+function GetData()
+{
+    var sSearchName = document.getElementById("sign-in-real-name").value;
 
-function getdata2(){
-    var docRef = db.collection("Random").doc("張凱翔");
-    console.log("Stage-1");
-    docRef.get().then(function(doc){
-        if (doc.exists == true) {
-            console.log(doc.data());
-        }else{
-            console.log("找不到文件");
-        }
-    }).catch(function(error){
+    if (sSearchName == "") {
+      console.log("Stage-1 / SearchName:");
+      VisibilityNameHelp("Input field can't be empty.", true);
+      return;
+    }
+
+    
+    var docRef = db.collection("Random").doc(sSearchName);
+    docRef.get().then(function(doc)
+    {
+      if(doc.exists)
+      {
+        console.log(doc.data());
+        VisibilityNameHelp("", false);
+      }
+      else
+      {
+        console.log("找不到文件");
+        document.getElementById("sign-in-real-name").value = "";
+        
+        VisibilityNameHelp("Can't find your name from firebase server.", true);
+      }
+    }).catch(function(error)
+    {
         console.log("提取文件時出錯: ", error);
     });
 }
 
-function DebugLog()
+function VisibilityNameHelp(v_message, v_key)
 {
-    console.log("FireStoreage / DebugLog method / GlobalTrigger: " + m_bGlobalTrigger);
+  if (v_key == true){
+    document.getElementById("name-help").textContent = v_message;
+    document.getElementById("name-help").style.visibility = "visible";
+  }
+  else{
+    document.getElementById("name-help").textContent = "";
+    document.getElementById("name-help").style.visibility = "hidden";
+  }
+}
+
+function DebugLog(v_msg)
+{
+    var sInputValue = document.getElementById("sign-in-real-name");
+    console.log("FireStoreage / DebugLog method / GlobalTrigger: " + m_bGlobalTrigger + " / InputValue: " + sInputValue.value + " / Msg: " + v_msg);
 }
 
 function ChangeVariable()

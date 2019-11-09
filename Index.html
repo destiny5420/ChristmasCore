@@ -15,25 +15,52 @@
     <!-- Custom javascript -->
     <script src="scripts/FireStorage.js"></script>
 
-    <title>Hello, world!</title>
+    <!-- Custom css -->
+    <link href="css/buttonType.css" rel="stylesheet" />
+
+    <title>花蓮雙十找劉先生汽車貸款</title>
   </head>
   <body>
     <!-- Image and text -->
     <nav class="navbar navbar-light bg-dark">
         <a class="navbar-brand" href="#">
         <img src="image/brandIcon.png" width="30" height="30" class="d-inline-block align-top" alt="">
-        花蓮雙十找劉先生汽車貸款之聖誕晚會抽抽樂機器v1.0
+        聖誕晚會抽抽樂機器v1.0
         </a>
     </nav>
-    <button type="button" class="btn btn-primary" onclick="DebugLog()">ShowLog</button>
-    <button type="button" class="btn btn-success" onclick="storedata()">Success</button>
-    <button type="button" class="btn btn-primary btn-lg" onclick="ChangeVariable()">ChangeGlobalVariable</button>
 
-
-
-
-
-
+    <div class="container-fluid">
+        <div class="row">
+          <div class="col-4"> 
+          </div>
+          <div class="col-4" style="margin-top: 20vh;">
+              <form>
+                  <div id="form-group-one" class="form-group">
+                    <input id="sign-in-real-name" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter your real name">
+                    <small id="name-help" style="visibility:hidden;" class="form-text text-muted">Ca.</small>
+                  </div>
+                  <div align="center" class="form-group">
+                    <button id="sign-in-button" type="button" class="btn btn-success" onclick="GetData()">Sign in</button>
+                  </div>        
+              </form>
+          </div>
+          <div class="col-4">
+          </div>
+        </div>
+      </div>
+      
+    <!-- <div class="container-fluid">
+      <div class="row">
+        <div class="col-2"> 
+        </div>
+        <div class="col-8" align="center" style="height: 150px;">
+        <input type="text" class="form-control" placeholder="Please enter you real name." style="margin-bottom: 10vh; margin-top: 10vh;">
+        <button type="button" class="btn btn-primary">LogIn</button>
+        </div>
+        <div class="col-2">
+        </div>
+      </div>
+    </div> -->
 
 
     <!-- Optional JavaScript -->
