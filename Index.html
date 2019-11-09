@@ -8,65 +8,105 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+    <!-- jQuery -->
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        // $('#login-page').fadeOut();
+        // console.log("init jquery!");
+      });
+    </script>
+
     <!-- About firebase -->
     <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
 
     <!-- Custom javascript -->
     <script src="scripts/FireStorage.js"></script>
+    <script src="scripts/Animation.js"></script>
 
     <!-- Custom css -->
     <link href="css/buttonType.css" rel="stylesheet" />
 
     <title>花蓮雙十找劉先生汽車貸款</title>
   </head>
-  <body>
-    <!-- Image and text -->
+
+  <body class="my-login-page">
+    <!-- Image and text
     <nav class="navbar navbar-light bg-dark">
         <a class="navbar-brand" href="#">
         <img src="image/brandIcon.png" width="30" height="30" class="d-inline-block align-top" alt="">
         聖誕晚會抽抽樂機器v1.0
         </a>
-    </nav>
+    </nav> -->
 
-    <div class="container-fluid">
-        <div class="row">
-          <div class="col-4"> 
-          </div>
-          <div class="col-4" style="margin-top: 20vh;">
-              <form>
-                  <div id="form-group-one" class="form-group">
-                    <input id="sign-in-real-name" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter your real name">
-                    <small id="name-help" style="visibility:hidden;" class="form-text text-muted">Ca.</small>
-                  </div>
-                  <div align="center" class="form-group">
-                    <button id="sign-in-button" type="button" class="btn btn-success" onclick="GetData()">Sign in</button>
-                  </div>        
-              </form>
-          </div>
-          <div class="col-4">
+    <section id="sect-login-page" class="h-100">
+        <div class="container h-100">
+          <div class="row justify-content-center h-100">
+              <div class="card-wrapper">
+                  
+                <div class="brand">
+                      <img src="image/brandIcon.png" alt="logo">
+                </div>
+
+                <div class="card fat">
+                    <div class="card-body">
+                      <h4 class="card-title">Login</h4>
+                      <form>
+                        <div class="form-group">
+                            <input id="input-login-name" type="text" class="form-control" name="login-name" value="" placeholder="Enter your chinese name" required autofocus>
+                            <small id="name-help" style="visibility:hidden;" class="form-text text-muted">Default value is null.</small>
+                        </div>
+                        <div class="form-group m-0">
+                            <button id="btn-login" type="button" class="btn btn-primary btn-block" onclick="GetData()">Login</button>
+                        </div>
+                      </form>
+                    </div>
+                </div>
+                <div class="footer">
+                    Copyright &copy; 2019 &mdash; Cernunnos Games
+                </div>
+              </div>
           </div>
         </div>
-      </div>
+      </section>
       
-    <!-- <div class="container-fluid">
-      <div class="row">
-        <div class="col-2"> 
+      <!-- <button id="test-button-1" type="button" class="btn btn-success">Button_01</button>
+      <button id="test-button-2" type="button" class="btn btn-success">Button_02</button> -->
+   
+      <section id="sect-info-page">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-4">
+                <input id="sign-in-real-name" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter your real name">
+            </div>
+            <div class="col-4">
+                <form>
+                    <div id="form-group-one" class="form-group">
+                      <input id="sign-in-real-name" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter your real name">
+                      <small id="name-help" style="visibility:hidden;" class="form-text text-muted">Ca.</small>
+                    </div>
+                    <div align="center" class="form-group">
+                      <button id="sign-in-button" type="button" class="btn btn-primary" onclick="GetData()">Submit</button>
+                    </div>        
+                </form>
+            </div>
+            <div class="col-4">
+            </div>
+          </div>
         </div>
-        <div class="col-8" align="center" style="height: 150px;">
-        <input type="text" class="form-control" placeholder="Please enter you real name." style="margin-bottom: 10vh; margin-top: 10vh;">
-        <button type="button" class="btn btn-primary">LogIn</button>
-        </div>
-        <div class="col-2">
-        </div>
-      </div>
-    </div> -->
+      </section>
 
+      
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
   </body>
 </html>

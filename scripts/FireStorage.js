@@ -27,11 +27,12 @@ function storedata()
 
 function GetData()
 {
-    var sSearchName = document.getElementById("sign-in-real-name").value;
+    var sSearchName = document.getElementById("input-login-name").value;
 
     if (sSearchName == "") {
-      console.log("Stage-1 / SearchName:");
+      console.log("sSearchName is null flow...");
       VisibilityNameHelp("Input field can't be empty.", true);
+      IntoInfoPage();
       return;
     }
 
@@ -43,18 +44,28 @@ function GetData()
       {
         console.log(doc.data());
         VisibilityNameHelp("", false);
+        IntoInfoPage();
       }
       else
       {
         console.log("找不到文件");
-        document.getElementById("sign-in-real-name").value = "";
+        document.getElementById("input-login-name").value = "";
         
-        VisibilityNameHelp("Can't find your name from firebase server.", true);
+        VisibilityNameHelp("Can't find your name from database, .", true);
       }
     }).catch(function(error)
     {
         console.log("提取文件時出錯: ", error);
     });
+}
+
+function IntoInfoPage()
+{
+  $(document).ready(function(){
+    $('#sect-login-page').fadeOut(function(){
+      $('#sect-info-page').fadeIn();
+    });
+  });
 }
 
 function VisibilityNameHelp(v_message, v_key)
