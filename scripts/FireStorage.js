@@ -13,45 +13,164 @@ firebase.initializeApp(firebaseConfig);
 
 var db = firebase.firestore();
 
-var m_bGlobalTrigger = true;
+var m_sName;
+var m_sFavoriteFood;
+var m_bSavePresentSuccess;
 
-function storedata()
+function Login()
 {
-  db.collection("movies").doc("新的分支").set({
-    name: "新世紀福爾摩斯",
-    date: "2010",
-    description: "很棒的一本書",
-    actors: ["蕭力維2", "Paper"]
-  })
-}
+    VisibilityNameHelp("", false);
+    VisibilityFavoriteFoodHelp("", false);
+    VisibilityLoginTips("", false);
 
-function GetData()
-{
     var sSearchName = document.getElementById("input-login-name").value;
+    var sSearchFavoriteFood = document.getElementById("input-login-favoritefood").value;
 
+    var bError = false;
     if (sSearchName == "") {
-      console.log("sSearchName is null flow...");
+      console.log("SearchName is null flow...");
       VisibilityNameHelp("Input field can't be empty.", true);
-      IntoInfoPage();
-      return;
+      // IntoInfoPage();
+      bError = true;
     }
 
-    
+    if (sSearchFavoriteFood == "") {
+      console.log("SearchFavoriteFood is null flow...");
+      VisibilityFavoriteFoodHelp("Input field can't be empty.", true);
+      // IntoInfoPage();
+      bError = true;
+    }
+
+    if (bError == true)
+      return;
+
     var docRef = db.collection("Random").doc(sSearchName);
     docRef.get().then(function(doc)
     {
       if(doc.exists)
       {
-        console.log(doc.data());
-        VisibilityNameHelp("", false);
-        IntoInfoPage();
+        if (doc.data().Favorite != sSearchFavoriteFood)
+        {
+          console.log("Incurrent your favorite food.");
+          VisibilityFavoriteFoodHelp("Incorrect your favorite food.", true);
+        }
+        else
+        {
+          console.log(doc.data());
+          m_sName = sSearchName;
+          m_sFavoriteFood = sSearchFavoriteFood;
+          VisibilityNameHelp("", false);
+          VisibilityFavoriteFoodHelp("", false);
+          IntoInfoPage();
+          SearchAllPlayer();
+          SettingPresentInfo();
+          console.log(m_sNames.length);
+        }
       }
       else
       {
         console.log("找不到文件");
-        document.getElementById("input-login-name").value = "";
-        
-        VisibilityNameHelp("Can't find your name from database, .", true);
+
+        VisibilityLoginTips("不存在此帳戶", true);
+      }
+    }).catch(function(error)
+    {
+        console.log("提取文件時出錯: ", error);
+    });
+}
+
+var m_sNames = [];
+
+function SearchAllPlayer()
+{
+  var iIndex = 0;
+  db.collection("Random").get().then(function(querySnapshot){
+    querySnapshot.forEach(function(doc){
+      console.log(doc.id, "=>", doc.data());
+      m_sNames[iIndex] = doc.id;
+      iIndex++;
+    });
+  })
+  .catch(function(error){
+    console.log("Error getting documents: " , error);
+  });
+
+  // console.log(" >>>>>> sNames.length: " + sNames.length);
+}
+
+function SettingPresentInfo()
+{
+
+  var docRef = db.collection("Random").doc(m_sName);
+  var self = this;
+  docRef.get().then(function(doc)
+  {
+    if(doc.exists)
+    {
+      self.m_bSavePresentSuccess = doc.data().SavePresentSuccess;
+      console.log("----------------- " + self.m_bSavePresentSuccess);
+
+      if (self.m_bSavePresentSuccess == true)
+      {
+        ModifyPresentInfo("你目前在聖誕襪中存的形容詞分別為 " + doc.data().Content_01 + "、" + doc.data().Content_02 + "、" + doc.data().Content_03 + "，目前開放可以無限次更改喔！");
+      }
+      else
+      {
+        ModifyPresentInfo("為了聖誕節活動的方便, 請在 下方輸入三個 想要收到聖誕禮物的形容詞.");
+      }
+    }
+  }).catch(function(error)
+  {
+      console.log("提取文件時出錯: ", error);
+  });
+}
+
+function CheckHaveSavedPresent()
+{
+  var docRef = db.collection("Random").doc(m_sName);
+  var self = this;
+  docRef.get().then(function(doc)
+  {
+    if(doc.exists)
+    {
+      self.m_bSavePresentSuccess = doc.data().SavePresentSuccess;
+      console.log("----------------- " + self.m_bSavePresentSuccess);
+      
+    }
+  }).catch(function(error)
+  {
+      console.log("提取文件時出錯: ", error);
+  });
+}
+
+function Submit()
+{
+  VisibilitySubmitHelp("", false);
+  var sContent01 = document.getElementById("input-content-01").value;
+  var sContent02 = document.getElementById("input-content-02").value;
+  var sContent03 = document.getElementById("input-content-03").value;
+
+  if (sContent01 == "" || sContent02 == "" || sContent03 == "") 
+  {
+    VisibilitySubmitHelp("請確實填寫三個禮物的形容詞阿 ~~~~~", true);
+    return;
+  }
+
+    console.log("m_sName: " + m_sName + " / m_sFavoriteFood: " + m_sFavoriteFood + " /Content01: " + sContent01 + " /Content02: " + sContent02 + " /Content03: " + sContent03);
+
+	  var docRef = db.collection("Random").doc(m_sName);
+    docRef.get().then(function(doc)
+    {
+      if(doc.exists)
+      {
+        docRef.update({
+          Content_01: sContent01,
+          Content_02: sContent02,
+          Content_03: sContent03,
+          SavePresentSuccess: true,
+        });
+
+        VisibilitySubmitHelp("恭喜你提交成功, 已將形容詞存進你專屬的聖誕襪中^___^", true);
       }
     }).catch(function(error)
     {
@@ -68,6 +187,11 @@ function IntoInfoPage()
   });
 }
 
+function ModifyPresentInfo(v_message)
+{
+  document.getElementById("p-present-info").innerHTML = v_message;
+}
+
 function VisibilityNameHelp(v_message, v_key)
 {
   if (v_key == true){
@@ -80,13 +204,38 @@ function VisibilityNameHelp(v_message, v_key)
   }
 }
 
-function DebugLog(v_msg)
+function VisibilityFavoriteFoodHelp(v_message, v_key)
 {
-    var sInputValue = document.getElementById("sign-in-real-name");
-    console.log("FireStoreage / DebugLog method / GlobalTrigger: " + m_bGlobalTrigger + " / InputValue: " + sInputValue.value + " / Msg: " + v_msg);
+  if (v_key == true){
+    document.getElementById("favoritefood-help").textContent = v_message;
+    document.getElementById("favoritefood-help").style.visibility = "visible";
+  }
+  else{
+    document.getElementById("favoritefood-help").textContent = "";
+    document.getElementById("favoritefood-help").style.visibility = "hidden";
+  }
 }
 
-function ChangeVariable()
+function VisibilityLoginTips(v_message, v_key)
 {
-    m_bGlobalTrigger = !m_bGlobalTrigger;
+  if (v_key == true){
+    document.getElementById("login-tips").textContent = v_message;
+    document.getElementById("login-tips").style.display = "";
+  }
+  else{
+    document.getElementById("login-tips").textContent = "";
+    document.getElementById("login-tips").style.display = "none";
+  }
+}
+
+function VisibilitySubmitHelp(v_message, v_key)
+{
+  if (v_key == true){
+    document.getElementById("submit-tips").textContent = v_message;
+    document.getElementById("submit-tips").style.visibility = "visible";
+  }
+  else{
+    document.getElementById("submit-tips").textContent = "";
+    document.getElementById("submit-tips").style.visibility = "hidden";
+  }
 }

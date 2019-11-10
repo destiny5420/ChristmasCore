@@ -8,16 +8,23 @@ html,body {
 }
 
 body.my-login-page {
-	background-color: #f7f9fb;
+	background-color: #f0f0f0;
 	font-size: 14px;
+}
+
+.my-login-page .info-page
+{
+	width: 75%;
+	height: 150px;
+    margin: 100px auto;
 }
 
 .my-login-page .brand {
 	width: 90px;
 	height: 90px;
 	overflow: hidden;
-	border-radius: 50%;
-	margin: 40px auto;
+	border-radius: 25%;
+	margin: 20px auto;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.616);
 	position: relative;
 	z-index: 1;

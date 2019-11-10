@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <link rel="shortcut icon" href="image/browserIcon.ico"/>
+
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -12,13 +14,6 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-    <script>
-      $(document).ready(function(){
-        // $('#login-page').fadeOut();
-        // console.log("init jquery!");
-      });
-    </script>
-
     <!-- About firebase -->
     <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
@@ -29,6 +24,9 @@
 
     <!-- Custom css -->
     <link href="css/buttonType.css" rel="stylesheet" />
+
+    <!-- Font style from google -->
+    <link href='https://fonts.googleapis.com/css?family=Cagliostro' rel='stylesheet'>
 
     <title>花蓮雙十找劉先生汽車貸款</title>
   </head>
@@ -48,19 +46,42 @@
               <div class="card-wrapper">
                   
                 <div class="brand">
-                      <img src="image/brandIcon.png" alt="logo">
+                      <img src="image/loginicon.png" alt="logo">
+                </div>
+
+                <div>
+                    <h2 align="center" style="font-size: 24px; font-family: Cagliostro;">
+                        Login to the ChristmasCenter.
+                    </h2>
                 </div>
 
                 <div class="card fat">
                     <div class="card-body">
                       <h4 class="card-title">Login</h4>
                       <form>
+
                         <div class="form-group">
+                            <label for="label-name">中文名字</label>
                             <input id="input-login-name" type="text" class="form-control" name="login-name" value="" placeholder="Enter your chinese name" required autofocus>
                             <small id="name-help" style="visibility:hidden;" class="form-text text-muted">Default value is null.</small>
                         </div>
+
+                        <div class="form-group">
+                            <label for="label-favoritefood">你最喜觀的食物</label>
+                            <input id="input-login-favoritefood" type="text" class="form-control" name="login-favoritefood" value="" placeholder="Enter your favorite food." required autofocus>
+                            <small id="favoritefood-help" style="visibility:hidden;" class="form-text text-muted">Default value is null.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label id="login-tips" style="display:none;">Default text</label>
+                        </div>
+
                         <div class="form-group m-0">
-                            <button id="btn-login" type="button" class="btn btn-primary btn-block" onclick="GetData()">Login</button>
+                            <button id="btn-login" type="button" class="btn btn-primary btn-block" onclick="Login()">Login</button>
+                        </div>
+
+                        <div class="mt-4 text-center">
+                          Don't have an account? <a href="regist.html">Create One</a>
                         </div>
                       </form>
                     </div>
@@ -70,41 +91,56 @@
                 </div>
               </div>
           </div>
+          
         </div>
-      </section>
+    </section>
       
       <!-- <button id="test-button-1" type="button" class="btn btn-success">Button_01</button>
       <button id="test-button-2" type="button" class="btn btn-success">Button_02</button> -->
    
-      <section id="sect-info-page">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-2">
-                <div id="form-group-one" class="form-group">
-                    <input id="sign-in-real-name" name="" type="text" class="form-control" placeholder="Enter your real name">
-                    <small id="name-help" class="form-text text-muted">請輸入你第一項的形容詞</small>
-                  </div>
+    <section id="sect-info-page" class="info-page">
+
+      <div class="alert alert-success" role="alert">
+          <p id="p-present-info">Present default value.</p>
+          <hr>
+          <p class="mb-0">Please contact an admin if you have any problem.</p>
+      </div>
+      <hr>
+      <div class="container-fluid h-100">
+        <div class="row" style="margin: 50px auto;">
+
+          <div class="col-md-4">
+              <input id="input-content-01" style="margin: 10px auto" name="" type="text" placeholder="請輸入第一個形容詞" class="form-control">
+          </div>
+
+          <div class="col align-self-center">
+              <input id="input-content-02" style="margin: 10px auto" name="" type="text" placeholder="請輸入第二個形容詞" class="form-control">
+          </div>
+
+          <div class="col-md-4">
+              <input id="input-content-03" style="margin: 10px auto" name="" type="text" placeholder="請輸入第三個形容詞" class="form-control">
+          </div>
+
+        </div>
+
+        <div class="row">
+            <div align="center" class="col-12">
+                <label id="submit-tips" style="visibility: hidden;">Default text</label>
             </div>
-            <div class="col align-self-center">
-                <div id="form-group-two" class="form-group">
-                    <input id="sign-in-real-name" name="" type="text" class="form-control" placeholder="Enter your real name">
-                    <small id="name-help" class="form-text text-muted">請輸入你第二項的形容詞</small>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div id="form-group-three" class="form-group">
-                    <input id="sign-in-real-name" name="" type="text" class="form-control" placeholder="Enter your real name">
-                    <small id="name-help" class="form-text text-muted">請輸入你第三項的形容詞</small>
-                </div> 
+  
+            <div class="col-12">
+                <div align="center" class="form-group">
+                    <button id="sign-in-button" type="button" class="btn btn-primary btn-block" onclick="Submit()">Submit</button>
+                </div>  
             </div>
             <div class="col-12">
                 <div align="center" class="form-group">
-                    <button id="sign-in-button" type="button" class="btn btn-primary">Submit</button>
+                    <button id="sign-in-button" type="button" disabled class="btn btn-primary btn-block">Random</button>
                 </div>  
             </div>
-          </div>
         </div>
-      </section>
+      </div>
+    </section>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
