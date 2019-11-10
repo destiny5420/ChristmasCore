@@ -79,27 +79,32 @@
       <section id="sect-info-page">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-4">
-                <input id="sign-in-real-name" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter your real name">
+            <div class="col-md-2">
+                <div id="form-group-one" class="form-group">
+                    <input id="sign-in-real-name" name="" type="text" class="form-control" placeholder="Enter your real name">
+                    <small id="name-help" class="form-text text-muted">請輸入你第一項的形容詞</small>
+                  </div>
             </div>
-            <div class="col-4">
-                <form>
-                    <div id="form-group-one" class="form-group">
-                      <input id="sign-in-real-name" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter your real name">
-                      <small id="name-help" style="visibility:hidden;" class="form-text text-muted">Ca.</small>
-                    </div>
-                    <div align="center" class="form-group">
-                      <button id="sign-in-button" type="button" class="btn btn-primary" onclick="GetData()">Submit</button>
-                    </div>        
-                </form>
+            <div class="col align-self-center">
+                <div id="form-group-two" class="form-group">
+                    <input id="sign-in-real-name" name="" type="text" class="form-control" placeholder="Enter your real name">
+                    <small id="name-help" class="form-text text-muted">請輸入你第二項的形容詞</small>
+                </div>
             </div>
-            <div class="col-4">
+            <div class="col-md-2">
+                <div id="form-group-three" class="form-group">
+                    <input id="sign-in-real-name" name="" type="text" class="form-control" placeholder="Enter your real name">
+                    <small id="name-help" class="form-text text-muted">請輸入你第三項的形容詞</small>
+                </div> 
+            </div>
+            <div class="col-12">
+                <div align="center" class="form-group">
+                    <button id="sign-in-button" type="button" class="btn btn-primary">Submit</button>
+                </div>  
             </div>
           </div>
         </div>
       </section>
-
-      
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
