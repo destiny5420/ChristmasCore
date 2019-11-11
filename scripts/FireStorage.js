@@ -12,7 +12,7 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 var db = firebase.firestore();
-
+var m_sPlayerCollectionName = "PlayerList";
 var m_sName;
 var m_sFavoriteFood;
 var m_bSavePresentSuccess;
@@ -42,7 +42,7 @@ function Login()
     if (bError == true)
       return;
 
-    var docRef = db.collection("Random").doc(sSearchName);
+    var docRef = db.collection(m_sPlayerCollectionName).doc(sSearchName);
     docRef.get().then(function(doc)
     {
       if(doc.exists)
@@ -75,11 +75,10 @@ function Login()
     });
 }
 
-
-
 var metaChar = false;
 var exampleKey = 38; // arrow key
-function keyEvent(event) {
+function keyEvent(event)
+{
   var key = event.keyCode || event.which;
   var keychar = String.fromCharCode(key);
   if (key == exampleKey) {
@@ -95,19 +94,16 @@ var m_sPresentContnet_03 = [];
 
 function Random()
 {
-  var docRef = db.collection("Random").doc(m_sName);
+  var docRef = db.collection(m_sPlayerCollectionName).doc(m_sName);
   docRef.get().then(function(doc){
     if (doc.exists == true) {
       if (doc.data().PresentTarget == "") {
         SearchAllPlayer();
-      }else
-      {
-        console.log("Can't contine.......");
+      }else{
+        ShowPresentCard();
       }
     }
   })
-
-  //SearchAllPlayer();
 }
 
 function SearchAllPlayer()
@@ -119,7 +115,7 @@ function SearchAllPlayer()
 
   var iIndex = 0;
 
-  db.collection("Random").get().then(function(querySnapshot){
+  db.collection(m_sPlayerCollectionName).get().then(function(querySnapshot){
     querySnapshot.forEach(function(doc){
       console.log(doc.id, "=>", doc.data());
       if (doc.data().Beclaim == false && doc.id != m_sName) {
@@ -151,7 +147,22 @@ function SearchAllPlayer()
 
 function SettingPresentData(v_targetName, v_presentcontent01, v_presentcontent02, v_presentcontent03)
 {
-  var docRef = db.collection("Random").doc(m_sName);
+  var docRef2 = db.collection(m_sPlayerCollectionName).doc(v_targetName);
+  docRef2.get().then(function(doc)
+  {
+    if(doc.exists)
+    {
+      docRef2.update({
+        Beclaim: true,
+      });
+    }
+  })
+  .catch(function(error)
+  {
+      console.log("提取文件時出錯: ", error);
+  });
+
+  var docRef = db.collection(m_sPlayerCollectionName).doc(m_sName);
   docRef.get().then(function(doc)
   {
     if(doc.exists)
@@ -162,34 +173,51 @@ function SettingPresentData(v_targetName, v_presentcontent01, v_presentcontent02
         PresentContent_02: v_presentcontent02,
         PresentContent_03: v_presentcontent03,
       });
-
-      // VisibilitySubmitHelp("恭喜你提交成功, 已將形容詞存進你專屬的聖誕襪中^___^", true);
     }
-  }).catch(function(error)
-  {
-      console.log("提取文件時出錯: ", error);
-  });
-
-  var docRef2 = db.collection("Random").doc(v_targetName);
-  docRef2.get().then(function(doc)
-  {
-    if(doc.exists)
-    {
-      docRef2.update({
-        Beclaim: true,
-      });
-    }
-  }).catch(function(error)
+  }).then(function(){
+    ShowPresentCard();
+  })
+  .catch(function(error)
   {
       console.log("提取文件時出錯: ", error);
   });
 }
 
+// .then(function(){
+//   console.log("*******CCCC");
+
+
+//   $('#git-group-a').fadeIn(1000);
+//   $('#git-group-b').fadeIn(1500);
+//   $('#git-group-c').fadeIn(2000);
+// })
+
+function ShowPresentCard()
+{
+  var docRef = db.collection(m_sPlayerCollectionName).doc(m_sName);
+  docRef.get().then(function(doc)
+  {
+    if(doc.exists)
+    {
+      m_sAryData[0] = doc.data().PresentContent_01;
+      m_sAryData[1] = doc.data().PresentContent_02;
+      m_sAryData[2] = doc.data().PresentContent_03;
+    }
+  }).then(function(){
+      console.log("*******CCCC");
+      $('#git-group-a').fadeIn(1000);
+      $('#git-group-b').fadeIn(1500);
+      $('#git-group-c').fadeIn(2000);
+  })
+  .catch(function(error)
+  {
+      console.log("提取文件時出錯: ", error);
+  });
+}
 
 function SettingPresentInfo()
 {
-
-  var docRef = db.collection("Random").doc(m_sName);
+  var docRef = db.collection(m_sPlayerCollectionName).doc(m_sName);
   var self = this;
   docRef.get().then(function(doc)
   {
@@ -215,7 +243,7 @@ function SettingPresentInfo()
 
 function CheckHaveSavedPresent()
 {
-  var docRef = db.collection("Random").doc(m_sName);
+  var docRef = db.collection(m_sPlayerCollectionName).doc(m_sName);
   var self = this;
   docRef.get().then(function(doc)
   {
@@ -246,7 +274,7 @@ function Submit()
 
     console.log("m_sName: " + m_sName + " / m_sFavoriteFood: " + m_sFavoriteFood + " /Content01: " + sContent01 + " /Content02: " + sContent02 + " /Content03: " + sContent03);
 
-	  var docRef = db.collection("Random").doc(m_sName);
+	  var docRef = db.collection(m_sPlayerCollectionName).doc(m_sName);
     docRef.get().then(function(doc)
     {
       if(doc.exists)
@@ -280,7 +308,6 @@ function IntoInfoPage()
     {
       if(doc.exists)
       {
-        console.log(doc.data().StartRandom);
         if (doc.data().StartRandom == false) {
           $('#input-content-01').prop('disabled', false);
           $('#input-content-02').prop('disabled', false);
@@ -354,4 +381,30 @@ function VisibilitySubmitHelp(v_message, v_key)
     document.getElementById("submit-tips").textContent = "";
     document.getElementById("submit-tips").style.visibility = "hidden";
   }
+}
+
+var m_sAryData = [];
+
+function GifButtonA()
+{
+  console.log("=== Press GifButtonA ===");
+  var giftElementA = document.getElementById("git-display-A");
+  giftElementA.innerHTML = m_sAryData[0];
+  $('#git-display-A').fadeIn(2500);
+}
+
+function GifButtonB()
+{
+  console.log("=== Press GifButtonB ===");
+  var giftElementB = document.getElementById("git-display-B");
+  giftElementB.innerHTML = m_sAryData[1];
+  $('#git-display-B').fadeIn(3000);
+}
+
+function GifButtonC()
+{
+  console.log("=== Press GifButtonC ===");
+  var giftElementC = document.getElementById("git-display-C");
+  giftElementC.innerHTML = m_sAryData[2];
+  $('#git-display-C').fadeIn(3500);
 }

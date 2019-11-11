@@ -1,3 +1,6 @@
+@import url(https://fonts.googleapis.com/earlyaccess/cwtexfangsong.css);
+@import url(https://fonts.googleapis.com/earlyaccess/cwtexkai.css);
+
 .login_button_type {
     margin-top: 50vh;
     margin-bottom: 50vh;
@@ -12,11 +15,18 @@ body.my-login-page {
 	font-size: 14px;
 }
 
-.my-login-page .info-page
+.my-login-page .sect-info-page
 {
 	width: 75%;
 	height: 150px;
     margin: 100px auto;
+}
+
+.my-login-page .random-info-page
+{
+	width: 75%;
+	height: 150px;
+    margin: 500px auto;
 }
 
 .my-login-page .brand {

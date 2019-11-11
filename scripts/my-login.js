@@ -31,6 +31,7 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 var db = firebase.firestore();
+var m_sPlayerCollectionName = "PlayerList";
 
 function Regist()
 {
@@ -49,7 +50,7 @@ function Regist()
 
 	console.log("sRegistName: " + sRegistName + " / sRegistFavoriteFood: " + sRegistFavoriteFood);
 
-	var docRef = db.collection("Random").doc(sRegistName);
+	var docRef = db.collection(m_sPlayerCollectionName).doc(sRegistName);
 	
     docRef.get().then(function(doc)
     {
@@ -71,7 +72,7 @@ function Regist()
 function RegistToFirebase(v_name, v_favoriteFood)
 {
 	console.log("RegistToFirebase");
-	db.collection("Random").doc(v_name).set({
+	db.collection(m_sPlayerCollectionName).doc(v_name).set({
 		Favorite: v_favoriteFood,
 		Content_01: "",
 		Content_02: "",
