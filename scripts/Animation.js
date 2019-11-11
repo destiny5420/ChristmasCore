@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    //$('#sect-info-page').hide();
+    $('#sect-info-page').hide();
     //$('#random-info-page').hide();
     $('#git-group-a').hide();
     $('#git-group-b').hide();
