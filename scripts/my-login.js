@@ -61,9 +61,10 @@ function Regist()
 		else
 		{
 			RegistToFirebase(sRegistName, sRegistFavoriteFood);
-			VisibilityRegistTipsHelp("註冊成功", true);
+			//VisibilityRegistTipsHelp("註冊成功", true);
 		}
-    }).catch(function(error)
+	})
+	.catch(function(error)
     {
         console.log("提取文件時出錯: ", error);
     });
@@ -83,6 +84,10 @@ function RegistToFirebase(v_name, v_favoriteFood)
 		PresentContent_02: "",
 		PresentContent_03: "",
 		Beclaim: false,
+		WhoBeclaim: "",
+	}).then(function(){
+		// change html page by javascript.
+		document.location.href="successforregist.html";
 	})
 }
 

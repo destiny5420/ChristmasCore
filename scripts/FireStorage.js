@@ -112,33 +112,40 @@ function SearchAllPlayer()
   m_sPresentContnet_01 = [];
   m_sPresentContnet_02 = [];
   m_sPresentContnet_03 = [];
-
+  // &&  doc.id != eWhoBeclaim
   var iIndex = 0;
+  var eWhoBeclaim;
+  var docRef = db.collection(m_sPlayerCollectionName).doc(m_sName);
 
-  db.collection(m_sPlayerCollectionName).get().then(function(querySnapshot){
-    querySnapshot.forEach(function(doc){
-      console.log(doc.id, "=>", doc.data());
-      if (doc.data().Beclaim == false && doc.id != m_sName) {
-        m_sTargetNames[iIndex] = doc.id;
-        m_sPresentContnet_01[iIndex] = doc.data().Content_01;
-        m_sPresentContnet_02[iIndex] = doc.data().Content_02;
-        m_sPresentContnet_03[iIndex] = doc.data().Content_03;
-        iIndex++;
+  docRef.get().then(function(doc){
+    eWhoBeclaim = doc.data().WhoBeclaim;
+  })
+  .then(function(){
+    db.collection(m_sPlayerCollectionName).get().then(function(querySnapshot){
+      querySnapshot.forEach(function(doc){
+        console.log(doc.id, "=>", doc.data());
+        if (doc.data().Beclaim == false && doc.id != m_sName && doc.id != eWhoBeclaim) {
+          m_sTargetNames[iIndex] = doc.id;
+          m_sPresentContnet_01[iIndex] = doc.data().Content_01;
+          m_sPresentContnet_02[iIndex] = doc.data().Content_02;
+          m_sPresentContnet_03[iIndex] = doc.data().Content_03;
+          iIndex++;
+        }
+      });
+  
+      if (iIndex == 0) {
+        console.log("No data to search player list.");
+        return;
       }
-    });
 
-    if (iIndex == 0) {
-      console.log("No data to search player list.");
-      return;
-    }
-
-    var iRandomIndex = Math.floor(Math.random() * m_sTargetNames.length);
-    // print date of name array.
-    for (let i = 0; i < m_sTargetNames.length; i++) {
-      console.log("Name["+i+"]: " + m_sTargetNames[i]);
-    }
-    console.log("Result / Name["+iRandomIndex+"]: " + m_sTargetNames[iRandomIndex]);
-    SettingPresentData(m_sTargetNames[iRandomIndex], m_sPresentContnet_01[iRandomIndex], m_sPresentContnet_02[iRandomIndex], m_sPresentContnet_03[iRandomIndex]);
+      var iRandomIndex = Math.floor(Math.random() * m_sTargetNames.length);
+      // print date of name array.
+      for (let i = 0; i < m_sTargetNames.length; i++) {
+        console.log("Name["+i+"]: " + m_sTargetNames[i]);
+      }
+      console.log("Result / Name["+iRandomIndex+"]: " + m_sTargetNames[iRandomIndex]);
+      SettingPresentData(m_sTargetNames[iRandomIndex], m_sPresentContnet_01[iRandomIndex], m_sPresentContnet_02[iRandomIndex], m_sPresentContnet_03[iRandomIndex]);
+    })
   })
   .catch(function(error){
     console.log("Error getting documents: " , error);
@@ -154,6 +161,7 @@ function SettingPresentData(v_targetName, v_presentcontent01, v_presentcontent02
     {
       docRef2.update({
         Beclaim: true,
+        WhoBeclaim: m_sName,
       });
     }
   })
@@ -182,15 +190,6 @@ function SettingPresentData(v_targetName, v_presentcontent01, v_presentcontent02
       console.log("提取文件時出錯: ", error);
   });
 }
-
-// .then(function(){
-//   console.log("*******CCCC");
-
-
-//   $('#git-group-a').fadeIn(1000);
-//   $('#git-group-b').fadeIn(1500);
-//   $('#git-group-c').fadeIn(2000);
-// })
 
 function ShowPresentCard()
 {
