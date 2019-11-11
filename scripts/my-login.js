@@ -72,11 +72,16 @@ function RegistToFirebase(v_name, v_favoriteFood)
 {
 	console.log("RegistToFirebase");
 	db.collection("Random").doc(v_name).set({
+		Favorite: v_favoriteFood,
 		Content_01: "",
 		Content_02: "",
 		Content_03: "",
 		SavePresentSuccess: false,
-		Favorite: v_favoriteFood,
+		PresentTarget: "",
+		PresentContent_01: "",
+		PresentContent_02: "",
+		PresentContent_03: "",
+		Beclaim: false,
 	})
 }
 

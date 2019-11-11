@@ -62,9 +62,8 @@ function Login()
           VisibilityNameHelp("", false);
           VisibilityFavoriteFoodHelp("", false);
           IntoInfoPage();
-          SearchAllPlayer();
+          //SearchAllPlayer();
           SettingPresentInfo();
-          console.log(m_sNames.length);
         }
       }
       else
@@ -79,24 +78,116 @@ function Login()
     });
 }
 
-var m_sNames = [];
+
+
+var metaChar = false;
+var exampleKey = 38; // arrow key
+function keyEvent(event) {
+  var key = event.keyCode || event.which;
+  var keychar = String.fromCharCode(key);
+  if (key == exampleKey) {
+
+    //SearchAllPlayer();
+  }
+}
+
+var m_sTargetNames = [];
+var m_sPresentContnet_01 = [];
+var m_sPresentContnet_02 = [];
+var m_sPresentContnet_03 = [];
+
+function Random()
+{
+  var docRef = db.collection("Random").doc(m_sName);
+  docRef.get().then(function(doc){
+    if (doc.exists == true) {
+      if (doc.data().PresentTarget == "") {
+        SearchAllPlayer();
+      }else
+      {
+        console.log("Can't contine.......");
+      }
+    }
+  })
+
+  //SearchAllPlayer();
+}
 
 function SearchAllPlayer()
 {
+  m_sTargetNames = [];
+  m_sPresentContnet_01 = [];
+  m_sPresentContnet_02 = [];
+  m_sPresentContnet_03 = [];
+
   var iIndex = 0;
+
   db.collection("Random").get().then(function(querySnapshot){
     querySnapshot.forEach(function(doc){
       console.log(doc.id, "=>", doc.data());
-      m_sNames[iIndex] = doc.id;
-      iIndex++;
+      if (doc.data().Beclaim == false && doc.id != m_sName) {
+        m_sTargetNames[iIndex] = doc.id;
+        m_sPresentContnet_01[iIndex] = doc.data().Content_01;
+        m_sPresentContnet_02[iIndex] = doc.data().Content_02;
+        m_sPresentContnet_03[iIndex] = doc.data().Content_03;
+        iIndex++;
+      }
     });
+
+    if (iIndex == 0) {
+      console.log("No data to search player list.");
+      return;
+    }
+
+    var iRandomIndex = Math.floor(Math.random() * m_sTargetNames.length);
+    // print date of name array.
+    for (let i = 0; i < m_sTargetNames.length; i++) {
+      console.log("Name["+i+"]: " + m_sTargetNames[i]);
+    }
+    console.log("Result / Name["+iRandomIndex+"]: " + m_sTargetNames[iRandomIndex]);
+    SettingPresentData(m_sTargetNames[iRandomIndex], m_sPresentContnet_01[iRandomIndex], m_sPresentContnet_02[iRandomIndex], m_sPresentContnet_03[iRandomIndex]);
   })
   .catch(function(error){
     console.log("Error getting documents: " , error);
   });
-
-  // console.log(" >>>>>> sNames.length: " + sNames.length);
 }
+
+function SettingPresentData(v_targetName, v_presentcontent01, v_presentcontent02, v_presentcontent03)
+{
+  var docRef = db.collection("Random").doc(m_sName);
+  docRef.get().then(function(doc)
+  {
+    if(doc.exists)
+    {
+      docRef.update({
+        PresentTarget: v_targetName,
+        PresentContent_01: v_presentcontent01,
+        PresentContent_02: v_presentcontent02,
+        PresentContent_03: v_presentcontent03,
+      });
+
+      // VisibilitySubmitHelp("恭喜你提交成功, 已將形容詞存進你專屬的聖誕襪中^___^", true);
+    }
+  }).catch(function(error)
+  {
+      console.log("提取文件時出錯: ", error);
+  });
+
+  var docRef2 = db.collection("Random").doc(v_targetName);
+  docRef2.get().then(function(doc)
+  {
+    if(doc.exists)
+    {
+      docRef2.update({
+        Beclaim: true,
+      });
+    }
+  }).catch(function(error)
+  {
+      console.log("提取文件時出錯: ", error);
+  });
+}
+
 
 function SettingPresentInfo()
 {
@@ -108,7 +199,7 @@ function SettingPresentInfo()
     if(doc.exists)
     {
       self.m_bSavePresentSuccess = doc.data().SavePresentSuccess;
-      console.log("----------------- " + self.m_bSavePresentSuccess);
+      //console.log("----------------- " + self.m_bSavePresentSuccess);
 
       if (self.m_bSavePresentSuccess == true)
       {
@@ -171,6 +262,7 @@ function Submit()
         });
 
         VisibilitySubmitHelp("恭喜你提交成功, 已將形容詞存進你專屬的聖誕襪中^___^", true);
+        ModifyPresentInfo("你目前在聖誕襪中存的形容詞分別為 " + sContent01 + "、" + sContent02 + "、" + sContent03 + "，目前開放可以無限次更改喔！");
       }
     }).catch(function(error)
     {
