@@ -1,3 +1,5 @@
+
+
 var firebaseConfig = {
     apiKey: "AIzaSyC9ezsnUObU68twx1lEuDdjWh_I-MuXCQ8",
     authDomain: "merrychristmas-919dc.firebaseapp.com",
@@ -16,6 +18,59 @@ var m_sPlayerCollectionName = "PlayerList";
 var m_sName;
 var m_sFavoriteFood;
 var m_bSavePresentSuccess;
+
+$(document).ready(function(){
+  $('#sect-info-page').hide();
+  //$('#random-info-page').hide();
+  $('#git-group-a').hide();
+  $('#git-group-b').hide();
+  $('#git-group-c').hide();
+  // 開關Button範例
+  // $('#btn-login').prop('disabled', true);
+
+  // $('#test-button-2').click(function(){
+  //   $('#test-button-2').fadeOut('slow', function(){
+  //     $('#test-button-1').fadeIn();
+  //   })
+  // });
+  Init();
+  
+
+});
+
+function Init()
+{
+  console.log("Init~~~~");
+
+  var docRef = db.collection("Global").doc("Variable");
+  docRef.get().then(function(doc)
+    {
+      if(doc.exists)
+      {
+        console.log("StartRandom: " + doc.data().StartRandom);
+        if (doc.data().StartRandom == false) {          
+          $('#input-content-01').prop('disabled', false);
+          $('#input-content-02').prop('disabled', false);
+          $('#input-content-03').prop('disabled', false);
+          $('#submit-button').prop('disabled', false);
+          $('#random-button').prop('disabled', true);
+          //$('#div-regist').prop('disabled', false);
+          document.getElementById("random-button").innerHTML = "Random (11/23開啟)";
+        }else{
+          $('#input-content-01').prop('disabled', true);
+          $('#input-content-02').prop('disabled', true);
+          $('#input-content-03').prop('disabled', true);
+          $('#submit-button').prop('disabled', true);
+          $('#random-button').prop('disabled', false);
+          //$('#div-regist').prop('disabled', true);
+          document.getElementById("random-button").innerHTML = "Random";
+        }
+      }
+    }).catch(function(error)
+    {
+        console.log("提取文件時出錯: ", error);
+    });
+}
 
 function Login()
 {
@@ -300,31 +355,31 @@ function IntoInfoPage()
     });
   });
 
-  var docRef = db.collection("Global").doc("Variable");
-  docRef.get().then(function(doc)
-    {
-      if(doc.exists)
-      {
-        if (doc.data().StartRandom == false) {
-          $('#input-content-01').prop('disabled', false);
-          $('#input-content-02').prop('disabled', false);
-          $('#input-content-03').prop('disabled', false);
-          $('#submit-button').prop('disabled', false);
-          $('#random-button').prop('disabled', true);
-          document.getElementById("random-button").innerHTML = "Random (11/23開啟)";
-        }else{
-          $('#input-content-01').prop('disabled', true);
-          $('#input-content-02').prop('disabled', true);
-          $('#input-content-03').prop('disabled', true);
-          $('#submit-button').prop('disabled', true);
-          $('#random-button').prop('disabled', false);
-          document.getElementById("random-button").innerHTML = "Random";
-        }
-      }
-    }).catch(function(error)
-    {
-        console.log("提取文件時出錯: ", error);
-    });
+  // var docRef = db.collection("Global").doc("Variable");
+  // docRef.get().then(function(doc)
+  //   {
+  //     if(doc.exists)
+  //     {
+  //       if (doc.data().StartRandom == false) {
+  //         $('#input-content-01').prop('disabled', false);
+  //         $('#input-content-02').prop('disabled', false);
+  //         $('#input-content-03').prop('disabled', false);
+  //         $('#submit-button').prop('disabled', false);
+  //         $('#random-button').prop('disabled', true);
+  //         document.getElementById("random-button").innerHTML = "Random (11/23開啟)";
+  //       }else{
+  //         $('#input-content-01').prop('disabled', true);
+  //         $('#input-content-02').prop('disabled', true);
+  //         $('#input-content-03').prop('disabled', true);
+  //         $('#submit-button').prop('disabled', true);
+  //         $('#random-button').prop('disabled', false);
+  //         document.getElementById("random-button").innerHTML = "Random";
+  //       }
+  //     }
+  //   }).catch(function(error)
+  //   {
+  //       console.log("提取文件時出錯: ", error);
+  //   });
 }
 
 function ModifyPresentInfo(v_message)

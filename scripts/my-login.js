@@ -33,41 +33,67 @@ firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
 var m_sPlayerCollectionName = "PlayerList";
 
+	
+
 function Regist()
 {
-    var sRegistName = document.getElementById("regist-name").value;
-	var sRegistFavoriteFood = document.getElementById("regist-favoriteFood").value;
-
-    if (sRegistName == "") {
-		VisibilityRegistTipsHelp("請輸入你的中文名稱", true);
-		return;
-    }
-
-	if (sRegistFavoriteFood == "") {
-		VisibilityRegistTipsHelp("請輸入你最喜歡的食物", true);
-		return;
-	}
-
-	console.log("sRegistName: " + sRegistName + " / sRegistFavoriteFood: " + sRegistFavoriteFood);
-
-	var docRef = db.collection(m_sPlayerCollectionName).doc(sRegistName);
-	
-    docRef.get().then(function(doc)
-    {
+	var docRef = db.collection("Global").doc("Variable");
+	docRef.get().then(function(doc)
+	{
 		if(doc.exists)
 		{
-			VisibilityRegistTipsHelp("此帳號已經存在, 你不能再註冊一個了!!!!", true);
+			console.log("StartRandom: " + doc.data().StartRandom);
+			if (doc.data().StartRandom == true) {
+				alert("目前不能在創建帳號囉");          
+				return false;
+			}
 		}
-		else
+
+		return true;
+	}).then(function(v_key){
+		
+		if (v_key == false) 
+			return;
+			
+		var sRegistName = document.getElementById("regist-name").value;
+		var sRegistFavoriteFood = document.getElementById("regist-favoriteFood").value;
+
+		if (sRegistName == "") {
+			VisibilityRegistTipsHelp("請輸入你的中文名稱", true);
+			return;
+		}
+
+		if (sRegistFavoriteFood == "") {
+			VisibilityRegistTipsHelp("請輸入你最喜歡的食物", true);
+			return;
+		}
+
+		console.log("sRegistName: " + sRegistName + " / sRegistFavoriteFood: " + sRegistFavoriteFood);
+
+		var docRef = db.collection(m_sPlayerCollectionName).doc(sRegistName);
+		
+		docRef.get().then(function(doc)
 		{
-			RegistToFirebase(sRegistName, sRegistFavoriteFood);
-			//VisibilityRegistTipsHelp("註冊成功", true);
-		}
+			if(doc.exists)
+			{
+				VisibilityRegistTipsHelp("此帳號已經存在, 你不能再註冊一個了!!!!", true);
+			}
+			else
+			{
+				RegistToFirebase(sRegistName, sRegistFavoriteFood);
+			}
+		})
+		.catch(function(error)
+		{
+			console.log("提取文件時出錯: ", error);
+		});
 	})
 	.catch(function(error)
-    {
-        console.log("提取文件時出錯: ", error);
-    });
+	{
+		console.log("提取文件時出錯: ", error);
+	});
+
+    
 }
 
 function RegistToFirebase(v_name, v_favoriteFood)
