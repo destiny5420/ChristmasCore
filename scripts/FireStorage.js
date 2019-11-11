@@ -313,7 +313,7 @@ function IntoInfoPage()
           $('#input-content-03').prop('disabled', false);
           $('#submit-button').prop('disabled', false);
           $('#random-button').prop('disabled', true);
-          document.getElementById("random-button").innerHTML = "comeing soon..";
+          document.getElementById("random-button").innerHTML = "Random (11/23開啟)";
         }else{
           $('#input-content-01').prop('disabled', true);
           $('#input-content-02').prop('disabled', true);
