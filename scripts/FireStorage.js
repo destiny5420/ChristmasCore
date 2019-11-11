@@ -30,14 +30,12 @@ function Login()
     if (sSearchName == "") {
       console.log("SearchName is null flow...");
       VisibilityNameHelp("Input field can't be empty.", true);
-      // IntoInfoPage();
       bError = true;
     }
 
     if (sSearchFavoriteFood == "") {
       console.log("SearchFavoriteFood is null flow...");
       VisibilityFavoriteFoodHelp("Input field can't be empty.", true);
-      // IntoInfoPage();
       bError = true;
     }
 
@@ -62,7 +60,6 @@ function Login()
           VisibilityNameHelp("", false);
           VisibilityFavoriteFoodHelp("", false);
           IntoInfoPage();
-          //SearchAllPlayer();
           SettingPresentInfo();
         }
       }
@@ -203,7 +200,7 @@ function SettingPresentInfo()
 
       if (self.m_bSavePresentSuccess == true)
       {
-        ModifyPresentInfo("你目前在聖誕襪中存的形容詞分別為 " + doc.data().Content_01 + "、" + doc.data().Content_02 + "、" + doc.data().Content_03 + "，目前開放可以無限次更改喔！");
+        ModifyPresentInfo("你目前在聖誕襪中存的形容詞分別為 => " + doc.data().Content_01 + "、" + doc.data().Content_02 + "、" + doc.data().Content_03);
       }
       else
       {
@@ -262,7 +259,7 @@ function Submit()
         });
 
         VisibilitySubmitHelp("恭喜你提交成功, 已將形容詞存進你專屬的聖誕襪中^___^", true);
-        ModifyPresentInfo("你目前在聖誕襪中存的形容詞分別為 " + sContent01 + "、" + sContent02 + "、" + sContent03 + "，目前開放可以無限次更改喔！");
+        ModifyPresentInfo("你目前在聖誕襪中存的形容詞分別為 => " + sContent01 + "、" + sContent02 + "、" + sContent03);
       }
     }).catch(function(error)
     {
@@ -277,6 +274,33 @@ function IntoInfoPage()
       $('#sect-info-page').fadeIn();
     });
   });
+
+  var docRef = db.collection("Global").doc("Variable");
+  docRef.get().then(function(doc)
+    {
+      if(doc.exists)
+      {
+        console.log(doc.data().StartRandom);
+        if (doc.data().StartRandom == false) {
+          $('#input-content-01').prop('disabled', false);
+          $('#input-content-02').prop('disabled', false);
+          $('#input-content-03').prop('disabled', false);
+          $('#submit-button').prop('disabled', false);
+          $('#random-button').prop('disabled', true);
+          document.getElementById("random-button").innerHTML = "comeing soon..";
+        }else{
+          $('#input-content-01').prop('disabled', true);
+          $('#input-content-02').prop('disabled', true);
+          $('#input-content-03').prop('disabled', true);
+          $('#submit-button').prop('disabled', true);
+          $('#random-button').prop('disabled', false);
+          document.getElementById("random-button").innerHTML = "Random";
+        }
+      }
+    }).catch(function(error)
+    {
+        console.log("提取文件時出錯: ", error);
+    });
 }
 
 function ModifyPresentInfo(v_message)

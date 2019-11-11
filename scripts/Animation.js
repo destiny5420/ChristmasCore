@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $('#sect-info-page').hide();
+    //$('#sect-info-page').hide();
 
     // 開關Button範例
     // $('#btn-login').prop('disabled', true);
