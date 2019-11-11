@@ -54,7 +54,6 @@ function Login()
         }
         else
         {
-          console.log(doc.data());
           m_sName = sSearchName;
           m_sFavoriteFood = sSearchFavoriteFood;
           VisibilityNameHelp("", false);
@@ -123,7 +122,6 @@ function SearchAllPlayer()
   .then(function(){
     db.collection(m_sPlayerCollectionName).get().then(function(querySnapshot){
       querySnapshot.forEach(function(doc){
-        console.log(doc.id, "=>", doc.data());
         if (doc.data().Beclaim == false && doc.id != m_sName && doc.id != eWhoBeclaim) {
           m_sTargetNames[iIndex] = doc.id;
           m_sPresentContnet_01[iIndex] = doc.data().Content_01;
@@ -139,11 +137,12 @@ function SearchAllPlayer()
       }
 
       var iRandomIndex = Math.floor(Math.random() * m_sTargetNames.length);
-      // print date of name array.
-      for (let i = 0; i < m_sTargetNames.length; i++) {
-        console.log("Name["+i+"]: " + m_sTargetNames[i]);
-      }
-      console.log("Result / Name["+iRandomIndex+"]: " + m_sTargetNames[iRandomIndex]);
+
+      // for (let i = 0; i < m_sTargetNames.length; i++) {
+      //   console.log("Name["+i+"]: " + m_sTargetNames[i]);
+      // }
+      // console.log("Result / Name["+iRandomIndex+"]: " + m_sTargetNames[iRandomIndex]);
+
       SettingPresentData(m_sTargetNames[iRandomIndex], m_sPresentContnet_01[iRandomIndex], m_sPresentContnet_02[iRandomIndex], m_sPresentContnet_03[iRandomIndex]);
     })
   })
@@ -203,7 +202,6 @@ function ShowPresentCard()
       m_sAryData[2] = doc.data().PresentContent_03;
     }
   }).then(function(){
-      console.log("*******CCCC");
       $('#git-group-a').fadeIn(1000);
       $('#git-group-b').fadeIn(1500);
       $('#git-group-c').fadeIn(2000);
@@ -271,27 +269,27 @@ function Submit()
     return;
   }
 
-    console.log("m_sName: " + m_sName + " / m_sFavoriteFood: " + m_sFavoriteFood + " /Content01: " + sContent01 + " /Content02: " + sContent02 + " /Content03: " + sContent03);
+    //console.log("m_sName: " + m_sName + " / m_sFavoriteFood: " + m_sFavoriteFood + " /Content01: " + sContent01 + " /Content02: " + sContent02 + " /Content03: " + sContent03);
 
-	  var docRef = db.collection(m_sPlayerCollectionName).doc(m_sName);
-    docRef.get().then(function(doc)
+  var docRef = db.collection(m_sPlayerCollectionName).doc(m_sName);
+  docRef.get().then(function(doc)
+  {
+    if(doc.exists)
     {
-      if(doc.exists)
-      {
-        docRef.update({
-          Content_01: sContent01,
-          Content_02: sContent02,
-          Content_03: sContent03,
-          SavePresentSuccess: true,
-        });
+      docRef.update({
+        Content_01: sContent01,
+        Content_02: sContent02,
+        Content_03: sContent03,
+        SavePresentSuccess: true,
+      });
 
-        VisibilitySubmitHelp("恭喜你提交成功, 已將形容詞存進你專屬的聖誕襪中^___^", true);
-        ModifyPresentInfo("你目前在聖誕襪中存的形容詞分別為 => " + sContent01 + "、" + sContent02 + "、" + sContent03);
-      }
-    }).catch(function(error)
-    {
-        console.log("提取文件時出錯: ", error);
-    });
+      VisibilitySubmitHelp("恭喜你提交成功, 已將形容詞存進你專屬的聖誕襪中^___^", true);
+      ModifyPresentInfo("你目前在聖誕襪中存的形容詞分別為 => " + sContent01 + "、" + sContent02 + "、" + sContent03);
+    }
+  }).catch(function(error)
+  {
+      console.log("提取文件時出錯: ", error);
+  });
 }
 
 function IntoInfoPage()
@@ -386,7 +384,6 @@ var m_sAryData = [];
 
 function GifButtonA()
 {
-  console.log("=== Press GifButtonA ===");
   var giftElementA = document.getElementById("git-display-A");
   giftElementA.innerHTML = m_sAryData[0];
   $('#git-display-A').fadeIn(2500);
@@ -394,7 +391,6 @@ function GifButtonA()
 
 function GifButtonB()
 {
-  console.log("=== Press GifButtonB ===");
   var giftElementB = document.getElementById("git-display-B");
   giftElementB.innerHTML = m_sAryData[1];
   $('#git-display-B').fadeIn(3000);
@@ -402,7 +398,6 @@ function GifButtonB()
 
 function GifButtonC()
 {
-  console.log("=== Press GifButtonC ===");
   var giftElementC = document.getElementById("git-display-C");
   giftElementC.innerHTML = m_sAryData[2];
   $('#git-display-C').fadeIn(3500);
