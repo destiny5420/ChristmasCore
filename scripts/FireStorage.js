@@ -21,10 +21,14 @@ var m_bSavePresentSuccess;
 
 $(document).ready(function(){
   $('#sect-info-page').hide();
-  //$('#random-info-page').hide();
   $('#git-group-a').hide();
   $('#git-group-b').hide();
   $('#git-group-c').hide();
+  $('#random-info-content').hide();
+  
+  
+  //$('#random-info-page').hide();
+
   // 開關Button範例
   // $('#btn-login').prop('disabled', true);
 
@@ -255,11 +259,14 @@ function ShowPresentCard()
       m_sAryData[0] = doc.data().PresentContent_01;
       m_sAryData[1] = doc.data().PresentContent_02;
       m_sAryData[2] = doc.data().PresentContent_03;
+      m_sTargetForGift = doc.data().PresentTarget;
     }
   }).then(function(){
+      ShowRandomContent();
       $('#git-group-a').fadeIn(1000);
       $('#git-group-b').fadeIn(1500);
       $('#git-group-c').fadeIn(2000);
+
   })
   .catch(function(error)
   {
@@ -436,6 +443,15 @@ function VisibilitySubmitHelp(v_message, v_key)
 }
 
 var m_sAryData = [];
+var m_sTargetForGift;
+
+function ShowRandomContent()
+{
+
+  var sRandomInfoContent = document.getElementById("random-info-content");
+  sRandomInfoContent.innerHTML = m_sTargetForGift + " 說：『我想要的禮物就交給你了喔!』";
+  $('#random-info-content').fadeIn(2000);
+}
 
 function GifButtonA()
 {

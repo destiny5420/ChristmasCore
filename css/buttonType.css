@@ -18,15 +18,22 @@ body.my-login-page {
 .my-login-page .sect-info-page
 {
 	width: 75%;
-	height: 150px;
+	height: 500px;
+    margin: 100px auto;
+}
+
+.my-login-page .content-info-page
+{
+	width: 75%;
+	height: 200px;
     margin: 100px auto;
 }
 
 .my-login-page .random-info-page
 {
 	width: 75%;
-	height: 150px;
-    margin: 500px auto;
+	height: 200px;
+    margin: 100px auto;
 }
 
 .my-login-page .brand {
