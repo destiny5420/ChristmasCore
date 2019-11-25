@@ -59,7 +59,7 @@ function Init()
           $('#submit-button').prop('disabled', false);
           $('#random-button').prop('disabled', true);
           //$('#div-regist').prop('disabled', false);
-          document.getElementById("random-button").innerHTML = "Random (11/23開啟)";
+          document.getElementById("random-button").innerHTML = "Random (11/28開啟)";
         }else{
           $('#input-content-01').prop('disabled', true);
           $('#input-content-02').prop('disabled', true);
